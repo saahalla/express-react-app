@@ -25,7 +25,26 @@ const Single = () => {
     .catch(error => {
       alert(error)
     })
-  })
+  }, [productId])
+
+  const handleDelete = async(id) => {
+    if(window.confirm('Yakin mau dihapus?')) {
+      try {
+        const response = await axios.delete(`http://localhost:3004/product/${id}`)
+        const {message, status} = response.data
+        
+        if(status === true){
+          alert(message)
+          history.push('/products')
+        }else{
+          alert(message)
+        }
+
+      } catch (error) {
+        alert('Network Error')
+      }
+    }
+  }
 
   return <>
     <h2>Halaman Single Product</h2>
@@ -38,6 +57,7 @@ const Single = () => {
     <button onClick={() => history.push('/products') }>
       &laquo; Back
     </button>
+    <button onClick={() => handleDelete(product._id)}>Delete</button>
   </>
 }
 
